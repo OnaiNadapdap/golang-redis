@@ -6,6 +6,8 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/onainadapdap1/golang-crud-redis/domain"
 	"github.com/onainadapdap1/golang-crud-redis/model"
+	"strconv"
+	// "http"
 )
 
 type NovelController struct {
@@ -53,14 +55,14 @@ func (n *NovelController) GetNovelById(ctx *fiber.Ctx) error {
 
 	novel, err := n.novelUseCase.GetNovelById(idInt)
 	if err != nil {
-		return ctx.Status(http.StatusBadRequest).JSON 
+		return ctx.Status(http.StatusBadRequest).JSON(fiber.Map{"message": err.Error()}) 
 	}
 	var res model.Response
 	if novel.Name != "" {
 		res = model.Response{StatusCode: http.StatusOK, Message: "Get Novel by id success", Data: novel}
 	} else {
-		res = model.Response{StatusCode: http.StatusOK, Message: "Get Novel by id success (null)", Data: null }
+		res = model.Response{StatusCode: http.StatusOK, Message: "Get Novel by id success (null)",}
 	}
 
-	return ctx.Status(http.StatusOk).JSON(res)
+	return ctx.Status(http.StatusOK).JSON(res)
 }
